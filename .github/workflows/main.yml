@@ -15,16 +15,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Dependencies & Run
+      - name: Install All Dependencies & Run
         run: |
-          # 1. Устанавливаем необходимые SDK вручную
-          npm install @0xpolygonid/js-sdk ethers dotenv
+          # Устанавливаем полный стек iden3 и необходимые утилиты
+          npm install @0xpolygonid/js-sdk @iden3/js-iden3-auth @iden3/js-jwz ethers dotenv
           
-          # 2. Установка скилла через clawhub
+          # Установка скилла
           npx clawhub@latest install verified-agent-identity --force
           
-          # 3. Генерация ключей
+          # 1. Генерация ключей (уже должна пройти успешно)
           node scripts/createNewEthereumIdentity.js
           
-          # 4. Привязка агента
+          # 2. Привязка агента (тут была ошибка, теперь модули на месте)
           node scripts/manualLinkHumanToAgent.js --challenge '{"name": "Dev_Agent_Project", "description": "AI Agent for automated services"}'
