@@ -1,7 +1,7 @@
 name: Deploy Billions Agent
 
 on:
-  workflow_dispatch: # Позволяет запускать процесс вручную из вкладки Actions
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -15,13 +15,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install and Run Billions Agent
+      - name: Install Dependencies & Run
         run: |
-          # Установка с флагом --force для обхода ошибки suspicious skills
+          # 1. Устанавливаем необходимые SDK вручную
+          npm install @0xpolygonid/js-sdk ethers dotenv
+          
+          # 2. Установка скилла через clawhub
           npx clawhub@latest install verified-agent-identity --force
           
-          # Генерация ключей агента
+          # 3. Генерация ключей
           node scripts/createNewEthereumIdentity.js
           
-          # Привязка агента к твоему профилю (замени данные в --challenge при желании)
+          # 4. Привязка агента
           node scripts/manualLinkHumanToAgent.js --challenge '{"name": "Dev_Agent_Project", "description": "AI Agent for automated services"}'
