@@ -1,15 +1,5 @@
-name: Deploy Billions Agent
-on: workflow_dispatch # Запуск вручную
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install & Run
-        run: |
-          npx clawhub@latest install verified-agent-identity
-          node scripts/createNewEthereumIdentity.js
-          node scripts/manualLinkHumanToAgent.js --challenge '{"name": "My_Dev_Agent", "description": "Telegram Mini App Developer Agent"}'
+- name: Install & Run
+  run: |
+    npx clawhub@latest install verified-agent-identity --force
+    node scripts/createNewEthereumIdentity.js
+    node scripts/manualLinkHumanToAgent.js --challenge '{"name": "My_Dev_Agent", "description": "Telegram Mini App Developer Agent"}'
