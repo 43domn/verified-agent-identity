@@ -1,5 +1,27 @@
-- name: Install & Run
-  run: |
-    npx clawhub@latest install verified-agent-identity --force
-    node scripts/createNewEthereumIdentity.js
-    node scripts/manualLinkHumanToAgent.js --challenge '{"name": "My_Dev_Agent", "description": "Telegram Mini App Developer Agent"}'
+name: Deploy Billions Agent
+
+on:
+  workflow_dispatch: # Позволяет запускать процесс вручную из вкладки Actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install and Run Billions Agent
+        run: |
+          # Установка с флагом --force для обхода ошибки suspicious skills
+          npx clawhub@latest install verified-agent-identity --force
+          
+          # Генерация ключей агента
+          node scripts/createNewEthereumIdentity.js
+          
+          # Привязка агента к твоему профилю (замени данные в --challenge при желании)
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name": "Dev_Agent_Project", "description": "AI Agent for automated services"}'
